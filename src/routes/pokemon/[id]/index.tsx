@@ -1,14 +1,13 @@
-import { component$ } from '@builder.io/qwik';
+import { component$, useContext } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemon/pokemon-image';
+import { PokemonGameContext } from '~/context';
 
 export const usePokemonId = routeLoader$( ( { params, redirect } ) => {
 
 	const id = Number( params.id );
 
-	if ( isNaN( id ) ) {
-		redirect( 301, '/' );
-	}
+	if ( isNaN( id ) ) redirect( 301, '/' );
 
 	if ( id <= 0 || id > 1000 ) redirect( 301, '/' );
 
@@ -16,6 +15,8 @@ export const usePokemonId = routeLoader$( ( { params, redirect } ) => {
 } );
 
 export default component$<number>( () => {
+
+	const pokemonGame = useContext( PokemonGameContext );
 
 	// const location = useLocation();
 
@@ -30,7 +31,8 @@ export default component$<number>( () => {
 
 			<PokemonImage
 				pokemonId={ pokemonId.value }
-				isVisible={ true }
+				isVisible={ pokemonGame.isPokemonVisible }
+				backImg={ pokemonGame.showBackImage }
 			/>
 		</>
 	);
