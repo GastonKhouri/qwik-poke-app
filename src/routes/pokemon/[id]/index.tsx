@@ -2,6 +2,7 @@ import { component$, useContext } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 import { PokemonImage } from '~/components/pokemon/pokemon-image';
 import { PokemonGameContext } from '~/context';
+import { usePokemonGame } from '~/hooks/usePokemonGame';
 
 export const usePokemonId = routeLoader$( ( { params, redirect } ) => {
 
@@ -16,13 +17,18 @@ export const usePokemonId = routeLoader$( ( { params, redirect } ) => {
 
 export default component$<number>( () => {
 
-	const pokemonGame = useContext( PokemonGameContext );
-
 	// const location = useLocation();
 
 	// const id = location.params.id as any;
 
 	const pokemonId = usePokemonId();
+
+	const {
+		toggleFromBack,
+		toggleVisible,
+		isPokemonVisible,
+		showBackImage
+	} = usePokemonGame();
 
 	return (
 		<>
@@ -31,9 +37,15 @@ export default component$<number>( () => {
 
 			<PokemonImage
 				pokemonId={ pokemonId.value }
-				isVisible={ pokemonGame.isPokemonVisible }
-				backImg={ pokemonGame.showBackImage }
+				isVisible={ isPokemonVisible.value }
+				backImg={ showBackImage.value }
 			/>
+
+			<div class="mt-2">
+				<button onClick$={ toggleFromBack } class="btn btn-primary mr-2">Voltear</button>
+				<button onClick$={ toggleVisible } class="btn btn-primary">Revelar</button>
+			</div>
+
 		</>
 	);
 
