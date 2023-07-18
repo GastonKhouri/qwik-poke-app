@@ -21,6 +21,8 @@ export const PokemonImage = component$( ( { pokemonId, size = "200px", backImg =
 
 	const imgUrl = useComputed$( () => {
 
+		if ( pokemonId === "" ) return '';
+
 		return backImg
 			? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${ pokemonId }.png`
 			: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${ pokemonId }.png`;
